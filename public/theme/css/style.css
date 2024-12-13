@@ -74,7 +74,7 @@ Version: 1.0.0
 @import url('animate.css');
 @import url('owl.css');
 @import url('jquery-ui.min.css');
-@import url('jquery.modal.min.css');
+/* @import url('jquery.modal.min.css'); */
 @import url('select2.min.css');
 @import url('jquery.fancybox.min.css');
 
@@ -6973,7 +6973,7 @@ blockquote:after {
 
 ***/
 
-.jquery-modal{
+/* .jquery-modal{
 	z-index: 99;
 }
 
@@ -6984,7 +6984,7 @@ blockquote:after {
 	padding: 0;
 	left: 0;
 	top: 0;
-}
+} */
 
 .recipe-fullscreen-model{
     position: absolute;

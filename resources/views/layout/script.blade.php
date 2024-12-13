@@ -32,5 +32,7 @@
     // End Overall Js
     
     // Page Specific Js
-    @stack('script')
+    $(function() {
+        @stack('script')
+    });
 </script>

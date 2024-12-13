@@ -17,8 +17,37 @@
     <!--Sidebar Page Container-->
     <div class="sidebar-page-container">
         <div class="auto-container">
-            <div class="row clearfix">
+            {{-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#testModal">
+                Launch Modal
+            </button> --}}
 
+            <!-- Modal -->
+            <div class="modal fade" id="restaurantModal">
+                <div class="modal-dialog modal-sm" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Restaurant Closed</h4>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p class="text-center" id="schedule-msg">Sorry, we are currently closed or out of operating hours.</p>
+                            @if ($code == '002')
+                                <hr>
+                                <p>Opening <span class="float-right" id="opening"></span></p>
+                                <p>Closing <span class="float-right" id="closing"></span></p>
+                            @endif
+                        </div>
+                        <div class="modal-footer">
+                            <a href="{{ route('home') }}">
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal ENd -->
+
+            <div class="row clearfix">
                 <!--Content Side-->
                 <div class="content-side col-lg-9 col-md-12 col-sm-12">
                     <div class="our-shop">
@@ -33,21 +62,26 @@
                         </div>
 
                         <div class="row clearfix">
-                            @for ($i = 1; $i < 12; $i++)
+                            @foreach ($menus as $product)
                                 <div class="shop-item col-lg-4 col-md-6 col-sm-12">
                                     <div class="inner-box">
                                         <div class="image-box">
-                                            <figure class="image"><a href="shop-single.html"><img src="https://via.placeholder.com/300x300" alt=""></a></figure>
+                                            <figure class="image"><a href="shop-single.html">
+                                                @if (isset($product['images'][0]['path']))
+                                                        <img src="{{ env('SERVER_URL') }}storage/product_images/{{ $product['images'][0]['path'] }}" alt="{{ $product['title'] }}" >
+                                                    @else
+                                                    <img src="{{ env('SERVER_URL') }}assets/theme/images/default_product_image.jpg" alt="{{ $product['title'] }}" >
+                                                @endif
+                                            </a></figure>
                                             <div class="btn-box"><a href="shopping-cart.html">Add to cart</a></div>
                                         </div>
                                         <div class="lower-content">
-                                            <h4 class="name"><a href="shop-single.html">Authentic Macaroons</a></h4>
-                                            {{-- <div class="rating"><span class="fa fa-star"></span><span class="fa fa-star"></span><span class="fa fa-star"></span><span class="fa fa-star"></span><span class="fa fa-star light"></span></div> --}}
-                                            <div class="price"><del>$29.00</del> $25.00</div>
+                                            <h4 class="name"><a href="shop-single.html">{{ $product['title'] }}</a></h4>
+                                            <div class="price">{{ $currencySymbol . $product['price'] }}</div>
                                         </div>
                                     </div>
                                 </div>
-                            @endfor
+                            @endforeach
                         </div>
                     </div>
                 </div>
@@ -88,3 +122,14 @@
     </div>
     <!--End Sidebar Page Container-->
 @endsection
+
+@push('script')
+    var isClosed = @json($isClosed);
+    if (isClosed) {
+        if(@json($code) == '002'){
+            $('#opening').text(@json($opening));
+            $('#closing').text(@json($closing));
+        }
+        $('#restaurantModal').modal('show');
+    }
+@endpush

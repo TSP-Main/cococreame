@@ -12,8 +12,8 @@ Route::get('contact', [HomeController::class, 'contact'])->name('contact');
 Route::get('faq', [HomeController::class, 'faq'])->name('faq');
 Route::get('restaurant-detail', [HomeController::class, 'restaurantDetail']);
 
-// Menu
-Route::get('menu', [MenuController::class, 'index'])->name('menu');
+// Menu related routes
+Route::get('menu', [MenuController::class, 'menu'])->name('menu');
 // Route::get('{product:slug}', [MenuController::class, 'product'])->name('product');
 
 // Cart & Checkout

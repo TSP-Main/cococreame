@@ -27,7 +27,7 @@
             <div class="outer-box clearfix">
                 <!-- Shoppping Car -->
                 <div class="cart-btn">
-                    <a href="shopping-cart.html"><i class="icon flaticon-commerce"></i> <span class="count">2</span></a>
+                    <a href="{{ route('cart.view') }}"><i class="icon flaticon-commerce"></i> <span class="count">2</span></a>
 
                     <div class="shopping-cart">
                         <ul class="shopping-cart-items">
@@ -50,8 +50,8 @@
 
                         <div class="cart-footer">
                             <div class="shopping-cart-total"><strong>Subtotal:</strong> $97.00</div>
-                            <a href="cart.html" class="theme-btn">View Cart</a>
-                            <a href="checkout.html" class="theme-btn">Checkout</a>
+                            <a href="{{ route('cart.view') }}" class="theme-btn">View Cart</a>
+                            <a href="{{ route('checkout.view') }}" class="theme-btn">Checkout</a>
                         </div>
                     </div> <!--end shopping-cart -->
                 </div>

@@ -16,7 +16,9 @@
 
 <style>
     /* Overall Style */
-    
+    .modal-backdrop {
+        position: relative;
+    }
     /* End Overall Style */
 
     /* Page Specific Style */
