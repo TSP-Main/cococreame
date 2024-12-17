@@ -17,6 +17,10 @@ Route::get('menu', [MenuController::class, 'menu'])->name('menu');
 // Route::get('{product:slug}', [MenuController::class, 'product'])->name('product');
 
 // Cart & Checkout
-Route::get('cart', [CartController::class, 'cartView'])->name('cart.view');
+Route::get('cart', [CartController::class, 'viewCart'])->name('cart.view');
+Route::post('add-to-cart', [CartController::class, 'addToCart'])->name('cart.add');
+Route::post('update-cart', [CartController::class, 'updateCart'])->name('cart.update');
+Route::post('remove-from-cart', [CartController::class, 'removeFromCart'])->name('cart.remove');
+Route::get('destroy', [CartController::class, 'destroy']);
 Route::get('checkout', [CartController::class, 'checkoutView'])->name('checkout.view');
 

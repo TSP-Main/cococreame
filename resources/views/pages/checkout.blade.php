@@ -1,9 +1,9 @@
 @extends('layout.app')
-@section('title', 'shop')
+@section('title', 'Checkout')
 
 @section('content')
     <!--Page Title-->
-    <section class="page-title" style="background-image:url(https://via.placeholder.com/1920x400)">
+    <section class="page-title" style="background-image:url({{ asset('theme/images/background/34.jpg') }})">
         <div class="auto-container">
             <h1>Checkout</h1>
             <ul class="page-breadcrumb">
@@ -378,59 +378,27 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="cart-item">
-                            <td class="product-name">Birthday Cake&nbsp;
-                                <strong class="product-quantity">× 1</strong>
-                            </td> 
-                            <td class="product-total">
-                                <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>84.00</span>
-                            </td>
-                        </tr>
-
-                        <tr class="cart-item">
-                            <td class="product-name">Candy Lollipop&nbsp;
-                                <strong class="product-quantity">× 1</strong>
-                            </td> 
-                            <td class="product-total">
-                                <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>84.00</span>
-                            </td>
-                        </tr>
-
-                        <tr class="cart-item">
-                            <td class="product-name">Classic Macaroon&nbsp;
-                                <strong class="product-quantity">× 1</strong>
-                            </td> 
-                            <td class="product-total">
-                                <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>84.00</span>
-                            </td>
-                        </tr>
-
-                        <tr class="cart-item">
-                            <td class="product-name">Coffee Cake&nbsp;
-                                <strong class="product-quantity">× 1</strong>
-                            </td> 
-                            <td class="product-total">
-                                <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>84.00</span>
-                            </td>
-                        </tr>
-
-                        <tr class="cart-item">
-                            <td class="product-name">French Macaroon&nbsp;
-                                <strong class="product-quantity">× 1</strong>
-                            </td> 
-                            <td class="product-total">
-                                <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>84.00</span>
-                            </td>
-                        </tr>
+                        @foreach ($cart as $item)
+                            <tr class="cart-item">
+                                <td class="product-name">
+                                    {{ $item['productTitle']}}&nbsp;
+                                    <strong class="product-quantity">× {{ $item['quantity']}}</strong>
+                                    <p><small>{{ $item['optionNames'] ? implode(', ', $item['optionNames']) : '' }}</small></p>
+                                </td> 
+                                <td class="product-total">
+                                    <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">{{ $currency }}</span>{{ $item['rowTotal']}}</span>
+                                </td>
+                            </tr>
+                        @endforeach
                     </tbody>
                     <tfoot>
                         <tr class="cart-subtotal">
                             <th>Subtotal</th>
-                            <td><span class="amount">$186.00</span></td>
+                            <td><span class="amount">{{ $currency . $subTotal}}</span></td>
                         </tr>
                         <tr class="order-total">
                             <th>Total</th>
-                            <td><strong class="amount">$186.00</strong> </td>
+                            <td><strong class="amount">{{ $currency . $subTotal}}</strong> </td>
                         </tr>
                     </tfoot>
                 </table>
