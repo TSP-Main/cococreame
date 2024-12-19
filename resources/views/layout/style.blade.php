@@ -7,6 +7,9 @@
 <link href="{{ asset('theme/css/style.css') }}" rel="stylesheet">
 <link href="{{ asset('theme/css/responsive.css') }}" rel="stylesheet">
 
+<!-- checkout -->
+{{-- <link href="{{ asset('theme/css/checkout.css') }}" rel="stylesheet"> --}}
+
 <link rel="shortcut icon" href="{{ asset('theme/images/favicon.png') }}" type="image/x-icon">
 <link rel="icon" href="{{ asset('theme/images/favicon.png') }}" type="image/x-icon">
 
@@ -16,6 +19,9 @@
 
 <style>
     /* Overall Style */
+    .hide{
+        display: none;
+    }
     .modal-backdrop {
         position: relative;
     }

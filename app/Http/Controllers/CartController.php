@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Http;
 
 class CartController extends Controller
 {
@@ -21,6 +22,13 @@ class CartController extends Controller
         $currency = restaurant_detail()['restaurantDetail']['currency_symbol'];
         
         return view('pages.cart', compact('cart', 'currency', 'subTotal'));
+    }
+
+    public function fetchCart()
+    {
+        $cart = Session::get('cart');
+        $subTotal = Session::get('cartSubTotal');        
+        return response()->json(['status' => true, 'message' => 'Cart items available', 'cart' => $cart]);
     }
 
     public function addToCart(Request $request)
@@ -142,14 +150,43 @@ class CartController extends Controller
         $cart = Session::get('cart');
 
         if($cart){
-            $subTotal = Session::get('cartSubTotal');
-            $currency = restaurant_detail()['restaurantDetail']['currency_symbol'];
+            // $subTotal = Session::get('cartSubTotal');
 
-            return view('pages.checkout', compact('cart', 'currency', 'subTotal'));
+            // Get Stripe Key
+            $serverUrl  = env('SERVER_URL');
+            $apiToken   = env('API_TOKEN');
+            $url        = 'api/stripe/config';
+        
+            // Make the API request
+            $response = Http::withHeaders([
+                'Authorization' => $apiToken,
+            ])->get($serverUrl . $url);
+
+            $data['cartItems']      = Session::get('cart');
+            $data['cartSubTotal']   = Session::get('cartSubTotal');
+            $data['orderType']      = Session::get('orderType');
+            $data['stripeKey']      = $response['data']['stripeKey'];
+
+            $restaurantDetail = restaurant_detail();
+            $data['deliveryRadius'] = $restaurantDetail['restaurantDetail']['radius'];
+            $data['restaurantLat'] = $restaurantDetail['restaurantDetail']['latitude'];
+            $data['restaurantLng'] = $restaurantDetail['restaurantDetail']['longitude'];
+            $data['freeShippingAmount'] = $restaurantDetail['restaurantDetail']['amount'];
+            $data['currencySymbol'] = $restaurantDetail['restaurantDetail']['currency_symbol'];
+            $data['pickupMiniAmount'] = $restaurantDetail['restaurantDetail']['pickup_minimum_amount'];
+            $data['deliveryMiniAmount'] = $restaurantDetail['restaurantDetail']['delivery_minimum_amount'];
+            $data['deliveryCharges'] = $restaurantDetail['restaurantDetail']['delivery_charges'];
+
+            return view('pages.checkout4', $data);
         }
         else{
             return redirect()->route('cart.view');
         }
+    }
+
+    public function checkoutProcess(Request $request)
+    {
+        return $request;
     }
 
     public function destroy()

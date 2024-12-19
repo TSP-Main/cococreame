@@ -27,11 +27,11 @@
             <div class="outer-box clearfix">
                 <!-- Shoppping Car -->
                 <div class="cart-btn">
-                    <a href="{{ route('cart.view') }}"><i class="icon flaticon-commerce"></i> <span class="count">2</span></a>
+                    <a href="#"><i class="icon flaticon-commerce"></i> <span class="count">2</span></a>
 
                     <div class="shopping-cart">
                         <ul class="shopping-cart-items">
-                            <li class="cart-item">
+                            {{-- <li class="cart-item">
                                 <img src="https://via.placeholder.com/300x300" alt="#" class="thumb" />
                                 <span class="item-name">Birthday Cake</span>
                                 <span class="item-quantity">1 x <span class="item-amount">$84.00</span></span>
@@ -45,7 +45,7 @@
                                 <span class="item-quantity">1 x <span class="item-amount">$13.00</span></span>
                                 <a href="shop-single.html" class="product-detail"></a>
                                 <button class="remove-item"><span class="fa fa-times"></span></button>
-                            </li>
+                            </li> --}}
                         </ul>
 
                         <div class="cart-footer">

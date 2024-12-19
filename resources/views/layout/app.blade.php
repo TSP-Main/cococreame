@@ -78,5 +78,7 @@
 
         <!-- Scripts -->
         @include('layout.script')
+
+        @yield('script')
     </body>
 </html>

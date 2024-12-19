@@ -329,34 +329,9 @@ let isClosed = @json($isClosed);
             },
             success: function(response) {
                 alert(response.message);
+                console.log(response.cart);
                 updateCart(response.cart);
             }
         });
     }
-
-    {{-- update navbar cart --}}
-    function updateCart(cart) {
-        // Update cart count
-        $('.cart-btn .count').text(Object.keys(cart).length);
-    
-        // Clear existing items
-        $('.shopping-cart-items').empty();
-    
-        // Populate cart items
-        $.each(cart, function(rowId, item) {
-            $('.shopping-cart-items').append(`
-                <li class="cart-item">
-                    <img src="${item.productImage}" alt="#" class="thumb" />
-                    <span class="item-name">${item.productTitle}</span>
-                    <span class="item-quantity">${item.quantity} x <span class="item-amount">${ @json($currencySymbol) + item.rowTotal}</span></span>
-                    <button class="remove-item" data-row-id="${rowId}"><span class="fa fa-times"></span></button>
-                </li>
-            `);
-        });
-    
-        // Calculate subtotal
-        let subtotal = Object.values(cart).reduce((sum, item) => sum + parseFloat(item.rowTotal), 0);
-        $('.shopping-cart-total').html(`<strong>Subtotal:</strong> ${@json($currencySymbol) + subtotal.toFixed(2)}`);
-    }
-    
 @endpush

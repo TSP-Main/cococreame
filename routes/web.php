@@ -18,9 +18,13 @@ Route::get('menu', [MenuController::class, 'menu'])->name('menu');
 
 // Cart & Checkout
 Route::get('cart', [CartController::class, 'viewCart'])->name('cart.view');
+Route::get('fetch-cart', [CartController::class, 'fetchCart'])->name('cart.fetch');
 Route::post('add-to-cart', [CartController::class, 'addToCart'])->name('cart.add');
 Route::post('update-cart', [CartController::class, 'updateCart'])->name('cart.update');
 Route::post('remove-from-cart', [CartController::class, 'removeFromCart'])->name('cart.remove');
 Route::get('destroy', [CartController::class, 'destroy']);
 Route::get('checkout', [CartController::class, 'checkoutView'])->name('checkout.view');
+Route::post('process-checkout', [CartController::class, 'checkoutProcess'])->name('checkout.process');
+
+
 

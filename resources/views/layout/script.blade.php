@@ -24,14 +24,51 @@
 <script src="{{ asset('theme/js/select2.min.js') }}"></script>
 <script src="{{ asset('theme/js/sticky_sidebar.min.js') }}"></script>
 <script src="{{ asset('theme/js/script.js') }}"></script>
+{{-- <script src="{{ asset('theme/js/jquery.steps.js') }}"></script> --}}
 
 <!-- Custom Js Code -->
 <script>
-    // Overall Js
+    /********** Overall Js *********/
+    $(document).ready(function() {
+        fetchCart();
+    });
+
+    // cart item in navbar
+    function fetchCart() {
+        $.ajax({
+            url: "{{ route('cart.fetch') }}",  // Define this route in Laravel
+            method: "GET",
+            success: function(response) {
+                updateCart(response.cart);
+            }
+        });
+    }
+
+    // Update cart in navbar
+    function updateCart(cart) {
+        $('.cart-btn .count').text(Object.keys(cart).length);
     
-    // End Overall Js
+        // Clear existing items
+        $('.shopping-cart-items').empty();
     
-    // Page Specific Js
+        // Populate cart items
+        $.each(cart, function(rowId, item) {
+            $('.shopping-cart-items').append(`
+                <li class="cart-item">
+                    <img src="${item.productImage}" alt="#" class="thumb" />
+                    <span class="item-name">${item.productTitle}</span>
+                    <span class="item-quantity">${item.quantity} x <span class="item-amount">${ @json($currencySymbol) + item.rowTotal}</span></span>
+                    <button class="remove-item" data-row-id="${rowId}"><span class="fa fa-times"></span></button>
+                </li>
+            `);
+        });
+    
+        // Calculate subtotal
+        let subtotal = Object.values(cart).reduce((sum, item) => sum + parseFloat(item.rowTotal), 0);
+        $('.shopping-cart-total').html(`<strong>Subtotal:</strong> ${@json($currencySymbol) + subtotal.toFixed(2)}`);
+    }
+    
+    /********* Page Specific Js **********/
     $(function() {
         @stack('script')
     });
