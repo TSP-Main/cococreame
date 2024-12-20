@@ -58,7 +58,6 @@
                     <img src="${item.productImage}" alt="#" class="thumb" />
                     <span class="item-name">${item.productTitle}</span>
                     <span class="item-quantity">${item.quantity} x <span class="item-amount">${ @json($currencySymbol) + item.rowTotal}</span></span>
-                    <button class="remove-item" data-row-id="${rowId}"><span class="fa fa-times"></span></button>
                 </li>
             `);
         });

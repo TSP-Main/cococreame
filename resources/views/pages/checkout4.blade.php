@@ -59,6 +59,12 @@
                                                 <th>Subtotal</th>
                                                 <td><span>{{ $currencySymbol }}</span><span class="amount" id="sub-total">{{ $cartSubTotal }}</span></td>
                                             </tr>
+                                            @if ($discountCode)
+                                                <tr class="discount-div">
+                                                    <th>Discount Amount</th>
+                                                    <td class="text-right"><span>-{{ $currencySymbol }}</span><span class="amount" id="sub-total">{{ $discountAmount }}</span></td>
+                                                </tr>
+                                            @endif
                                             <tr class="delivery-charges-div" style="display: none">
                                                 <th>Delivery Charges (may vary)
                                                     (Free over £30.00)</th>
@@ -66,7 +72,7 @@
                                             </tr>
                                             <tr class="order-total">
                                                 <th>Total</th>
-                                                <td><strong class="amount" id="total">{{ $currencySymbol . $cartSubTotal}}</strong> </td>
+                                                <td><strong>{{$currencySymbol}}</strong><strong class="amount" id="total">{{$cartSubTotal-$discountAmount}}</strong> </td>
                                             </tr>
                                         </tfoot>
                                     </table>
@@ -282,8 +288,8 @@
 <script>
     // stripe payment
     document.addEventListener('DOMContentLoaded', function() {
-        // var totalBill = $('.total').text() * 100;
-        var totalBill = 500;
+        let totalBill = $('#total').text() * 100;
+        console.log(totalBill);
         const stripe = Stripe(document.getElementById('stripe_key').value);
         const elements = stripe.elements();
 
@@ -502,7 +508,7 @@
                     
                     if (cartSubTotal < freeShippingAmount) {
                         $('#delivery-charges-amount').text(currencySymbol + deliveryCharge);
-                        $('#total').text((parseFloat(deliveryCharge) + parseFloat(cartSubTotal)).toFixed(2));
+                        $('#total').text((parseFloat(deliveryCharge) + parseFloat(cartSubTotal) - @json($discountAmount)).toFixed(2));
 
                         $('#discount-bill').text((parseFloat(cartSubTotal) + parseFloat(deliveryCharge) - parseFloat(discountPrice)).toFixed(2));
                     } else {
@@ -539,10 +545,6 @@
 
             var customerLat = parseFloat(document.getElementById('latitude').value);
             var customerLng = parseFloat(document.getElementById('longitude').value);
-            
-            // var restaurantLat = {{ $restaurantLat }};
-            // var restaurantLng = {{ $restaurantLng }};
-            // var deliveryRadius = {{ $deliveryRadius }};
 
             // Calculate the distance using the Haversine formula
             var distance = calculateDistance(restaurantLat, restaurantLng, customerLat, customerLng);
@@ -628,7 +630,21 @@
     }
 
     $('input[name="order_type"]').on('change', function () {
+        let deliveryMiniAmount = @json($deliveryMiniAmount);
+        let pickupMiniAmount = @json($pickupMiniAmount);
+
         toggleAddressDetails();
+
+        var orderType = $(this).val();
+        var orderAmount = parseFloat($('#sub-total').text());
+
+        if (orderType === 'pickup' && orderAmount < pickupMiniAmount) {
+            alert("Order amount must be at least " + pickupMiniAmount + " for Pickup.");
+            $(this).prop('checked', false);
+        } else if (orderType === 'delivery' && orderAmount < deliveryMiniAmount) {
+            alert("Order amount must be at least " + deliveryMiniAmount + " for Delivery.");
+            $(this).prop('checked', false);
+        }
 
         $('#address').val('');
         $('#address').val('');

@@ -17,11 +17,13 @@ class CartController extends Controller
 
     public function viewCart()
     {
-        $cart = Session::get('cart');
-        $subTotal = Session::get('cartSubTotal');
-        $currency = restaurant_detail()['restaurantDetail']['currency_symbol'];
+        $data['cart'] = Session::get('cart');
+        $data['subTotal'] = Session::get('cartSubTotal');
+        $data['discountCode'] = Session::get('discountCode') ?? NULL;
+        $data['discountAmount'] = Session::get('discountAmount') ?? '0.00';
+        $data['currency'] = restaurant_detail()['restaurantDetail']['currency_symbol'];
         
-        return view('pages.cart', compact('cart', 'currency', 'subTotal'));
+        return view('pages.cart', $data);
     }
 
     public function fetchCart()
@@ -165,6 +167,8 @@ class CartController extends Controller
             $data['cartItems']      = Session::get('cart');
             $data['cartSubTotal']   = Session::get('cartSubTotal');
             $data['orderType']      = Session::get('orderType');
+            $data['discountCode'] = Session::get('discountCode') ?? NULL;
+            $data['discountAmount'] = Session::get('discountAmount') ?? '0.00';
             $data['stripeKey']      = $response['data']['stripeKey'];
 
             $restaurantDetail = restaurant_detail();

@@ -3,6 +3,7 @@
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MenuController;
+use App\Http\Controllers\ApiController;
 use Illuminate\Support\Facades\Route;
 
 // Home & Static Pages
@@ -26,5 +27,7 @@ Route::get('destroy', [CartController::class, 'destroy']);
 Route::get('checkout', [CartController::class, 'checkoutView'])->name('checkout.view');
 Route::post('process-checkout', [CartController::class, 'checkoutProcess'])->name('checkout.process');
 
-
+// calculate discount
+Route::post('discount/check', [ApiController::class, 'discount_check'])->name('discount.check');
+Route::post('calculate-discount', [ApiController::class, 'calculateDiscount'])->name('discount.calculate');
 
